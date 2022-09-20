@@ -1,31 +1,27 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 using WebApplication1.Controllers;
 using WebApplication1.Data;
 using WebApplication1.Models;
+using WebApplication1;
+using Microsoft.Extensions.Configuration;
 
 namespace TestProject1
 {
     [TestClass]
     public class UnitTest1
     {
-        
-
         [TestMethod]
-        public void TestMethod1()
+        public void TestTraerProductos()
         {
-            var lista1 = ListarProductos();
-            var lista2 = ListarProductos();
+            var configuracion = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
 
-            Assert.AreEqual(lista1.Count, lista2.Count);
+            ConexionDBContext conexionDBContext = new ConexionDBContext(configuracion);
 
-            //int num1 = 10;
-            //int num2 = 10;
+            var producto = new ProductoController(conexionDBContext);
 
-            //Assert.AreEqual(num1, num2);
-        }
-
-        public List<Producto> ListarProductos()
-        {
-            return new List<Producto>();
+            Assert.IsNotNull(producto.TraerProductos());
         }
     }
 }
